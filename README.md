@@ -1,0 +1,2 @@
+# cthulu-himself
+Discord bot!
