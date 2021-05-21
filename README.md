@@ -1,2 +1,2 @@
-# cthulu-himself
+# cthulhu-himself
 Discord bot!
