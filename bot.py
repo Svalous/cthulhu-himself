@@ -29,7 +29,7 @@ client.remove_command('help')
 # Event definitions
 @client.event
 async def on_ready():
-    print('EnderBot has joined the party.')
+    print('Cthulhu Himself has arrived.')
 
 # Command definitions
 @client.command(pass_context=True)
