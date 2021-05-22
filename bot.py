@@ -68,5 +68,6 @@ async def judge(ctx):
         judgement_text = "Cthulhu has judged, and found you exceptional."
     else:
         judgement_text = "Cthulhu has judged, and is indifferent."
+    await ctx.send(judgement_text)
 
 client.run(config)
