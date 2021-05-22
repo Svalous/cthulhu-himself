@@ -41,8 +41,26 @@ async def on_message(message):
     """
     match = re.search('^\s*\$play[\s$]+.*', message.content)
     if match:
-        await message.channel.send('$volume ' + str(DEFAULT_VOLUME))
+        try:
+            voice_channel = message.author.voice.channel
+            voice_protocol = await voice_channel.connect()
+            await message.channel.send('$volume ' + str(DEFAULT_VOLUME))
+            await voice_protocol.disconnect()
+            voice_protocol.cleanup()
+        except AttributeError:
+            print('User is not in a voice channel, ignoring $play command.')
+            pass
     await client.process_commands(message)
+
+@client.command()
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+
+@client.command()
+async def leave(ctx):
+    await ctx.voice_client.disconnect()
+    ctx.voice_client.cleanup()
 
 # Command definitions
 @client.command(pass_context=True)
