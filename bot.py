@@ -25,7 +25,6 @@ if len(sys.argv) > 1 and str(sys.argv[1]) == 'PROD':
     config = os.environ['TOKEN']
     client = commands.Bot(command_prefix = '.')
 
-
 client.remove_command('help')
 
 # Event definitions
