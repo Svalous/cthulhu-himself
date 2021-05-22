@@ -14,6 +14,9 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+# Globals
+DEFAULT_VOLUME = 15
+
 # Instantiate bot with none, define during config
 client = None
 # Load config (dev)
@@ -33,9 +36,11 @@ client.remove_command('help')
 async def on_ready():
     print('Cthulhu Himself has arrived.')
 
-@discord.event
-async def on_message(ctx):
-    match = re.search('^\s*\$play[\s$]+.*', ctx.message)
+@client.event
+async def on_message(message):
+    match = re.search('^\s*\$play[\s$]+.*', message.content)
+    if match:
+        await message.channel.send('$volume ' + str(DEFAULT_VOLUME))
 
 # Command definitions
 @client.command(pass_context=True)
