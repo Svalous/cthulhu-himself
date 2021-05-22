@@ -56,7 +56,7 @@ async def help(ctx):
     )
 
     embed.set_author(name='Help')
-    embed.add_field(name='.roll', value='Returns a random integer between a and b.', inline=False)
+    embed.add_field(name='.roll [a] [b]', value='Returns a random integer between a and b.', inline=False)
     embed.add_field(name='.judge', value='Be judged by Cthulhu.', inline=False)
     
     await author.send(embed=embed)
