@@ -2,6 +2,7 @@ import discord
 import logging
 import json
 import random
+import time
 import sys
 import os
 import re
@@ -44,7 +45,9 @@ async def on_message(message):
         try:
             voice_channel = message.author.voice.channel
             voice_protocol = await voice_channel.connect()
+            time.sleep(10)
             await message.channel.send('$volume ' + str(DEFAULT_VOLUME))
+            time.sleep(10)
             await voice_protocol.disconnect()
             voice_protocol.cleanup()
         except AttributeError:
