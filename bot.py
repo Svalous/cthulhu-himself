@@ -4,6 +4,7 @@ import json
 import random
 import sys
 import os
+import re
 from discord.ext import commands
 
 # Logging boilerplate
@@ -31,6 +32,10 @@ client.remove_command('help')
 @client.event
 async def on_ready():
     print('Cthulhu Himself has arrived.')
+
+@discord.event
+async def on_message(ctx):
+    match = re.search('^\s*\$play[\s$]+.*', ctx.message)
 
 # Command definitions
 @client.command(pass_context=True)
