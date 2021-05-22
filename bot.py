@@ -55,4 +55,18 @@ async def roll(ctx, a, b):
     """
     await ctx.send(random.randint(int(a),int(b)))
 
+@client.command()
+async def judge(ctx):
+    """
+    Judges the user.
+    """
+    judgement_int = random.randint(1,10)
+    judgement_text = None
+    if judgement == 1:
+        judgement_text = "Cthulhu has judged, and found you wanting."
+    elif judgement == 10:
+        judgement_text = "Cthulhu has judged, and found you exceptional."
+    else:
+        judgement_text = "Cthulhu has judged, and is indifferent."
+
 client.run(config)
