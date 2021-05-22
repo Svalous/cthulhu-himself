@@ -2,10 +2,8 @@ import discord
 import logging
 import json
 import random
-import time
 import sys
 import os
-import re
 from discord.ext import commands
 
 # Logging boilerplate
@@ -57,17 +55,17 @@ async def help(ctx):
     )
 
     embed.set_author(name='Help')
-    embed.add_field(name='.roll [a] [b]', value='Returns a random integer between a and b.', inline=False)
+    embed.add_field(name='.roll [start] [end]', value='Returns a random integer between start and end.', inline=False)
     embed.add_field(name='.judge', value='Be judged by Cthulhu.', inline=False)
     
     await author.send(embed=embed)
 
 @client.command()
-async def roll(ctx, a, b):
+async def roll(ctx, start, end):
     """
     Returns a random integer between a and b.
     """
-    await ctx.send(random.randint(int(a),int(b)))
+    await ctx.send(random.randint(int(start),int(end)))
 
 @client.command()
 async def judge(ctx):
