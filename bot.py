@@ -36,6 +36,9 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    """
+    Provides auto-volume functionality that botify lacks.
+    """
     match = re.search('^\s*\$play[\s$]+.*', message.content)
     if match:
         await message.channel.send('$volume ' + str(DEFAULT_VOLUME))
@@ -74,8 +77,12 @@ async def judge(ctx):
     judgement_text = None
     if judgement_value == 1:
         judgement_text = "Cthulhu has judged, and found you wanting."
-    elif judgement_value == 10:
+    elif judgement_value == 2:
+        judgement_text = "Cthulhu has judged, and found you limited."
+    elif judgement_value == 9:
         judgement_text = "Cthulhu has judged, and found you exceptional."
+    elif judgement_value == 10:
+        judgement_text = "Cthulhu has judged, and found you unequaled."
     else:
         judgement_text = "Cthulhu has judged, and is indifferent."
     await ctx.send(judgement_text)
