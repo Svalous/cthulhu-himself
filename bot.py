@@ -42,6 +42,7 @@ async def on_message(message):
     match = re.search('^\s*\$play[\s$]+.*', message.content)
     if match:
         await message.channel.send('$volume ' + str(DEFAULT_VOLUME))
+    await client.process_commands(message)
 
 # Command definitions
 @client.command(pass_context=True)
