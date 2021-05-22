@@ -48,19 +48,18 @@ async def on_message(message):
             await voice_protocol.disconnect()
             voice_protocol.cleanup()
         except AttributeError:
-            print('User is not in a voice channel, ignoring $play command.')
+            print('User is not in a voice channel, ignoring botify play command.')
             pass
     await client.process_commands(message)
 
 @client.command()
-async def join(ctx):
-    channel = ctx.author.voice.channel
-    await channel.connect()
-
-@client.command()
 async def leave(ctx):
-    await ctx.voice_client.disconnect()
-    ctx.voice_client.cleanup()
+    try:
+        await ctx.voice_client.disconnect()
+        ctx.voice_client.cleanup()
+    except AttributeError:
+        print('Bot is not in a voice channel, ignoring leave command.')
+        pass
 
 # Command definitions
 @client.command(pass_context=True)
