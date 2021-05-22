@@ -35,26 +35,6 @@ client.remove_command('help')
 async def on_ready():
     print('Cthulhu Himself has arrived.')
 
-@client.event
-async def on_message(message):
-    """
-    Provides auto-volume functionality that botify lacks.
-    """
-    match = re.search('^\s*\$play[\s$]+.*', message.content)
-    if match:
-        try:
-            voice_channel = message.author.voice.channel
-            voice_protocol = await voice_channel.connect()
-            time.sleep(10)
-            await message.channel.send('$volume ' + str(DEFAULT_VOLUME))
-            time.sleep(10)
-            await voice_protocol.disconnect()
-            voice_protocol.cleanup()
-        except AttributeError:
-            print('User is not in a voice channel, ignoring botify play command.')
-            pass
-    await client.process_commands(message)
-
 @client.command()
 async def leave(ctx):
     try:
