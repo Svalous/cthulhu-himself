@@ -13,17 +13,19 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+# Instantiate bot with none, define during config
+client = None
 # Load config (dev)
 if len(sys.argv) == 1:
     with open('config.json') as json_data_file:
         config = json.load(json_data_file)['Token']
+    client = commands.Bot(command_prefix = ',')
 # Load config (prod)
 if len(sys.argv) > 1 and str(sys.argv[1]) == 'PROD':
     config = os.environ['TOKEN']
+    client = commands.Bot(command_prefix = '.')
 
 
-# Client instantiation and prefex definition
-client = commands.Bot(command_prefix = '.')
 client.remove_command('help')
 
 # Event definitions
