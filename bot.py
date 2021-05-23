@@ -131,7 +131,7 @@ async def judge(ctx):
 async def confound(ctx, user : discord.User, insanity : int):
     """
     Adds / subtracts to a user's insanity.
-    Insanity can range from -100 to 100.
+    Insanity can range from 1 to 100.
     """
     if insanity < 1 or insanity > 100:
         await ctx.send('Insanity must be between 1 and 100 per confound.')
