@@ -30,6 +30,9 @@ if len(sys.argv) == 1:
 # Load config (prod)
 elif len(sys.argv) > 1 and str(sys.argv[1]) == 'PROD':
     config = os.environ['TOKEN']
+    # Bit of a hack below, Heroku database_url is unsuitable for sqlalchemy and cannot be altered afaik
+    uri = os.environ['DATABASE_URL']
+    db_string= uri[:8]+'ql' + uri[8:]
     db_string = os.environ['DATABASE_URL']
 # Config not understood, exit
 else:
