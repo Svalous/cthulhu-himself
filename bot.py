@@ -56,7 +56,7 @@ class User(base):
 Session = sessionmaker(db)
 session = Session()
 
-# NOTE:  The below is required to make changes to the table after the first metadata creation
+# NOTE:  The below is required to make changes to the table after the first metadata creation.  This WILL drop the table.
 #base.metadata.drop_all(db)
 base.metadata.create_all(db)
 
@@ -94,7 +94,7 @@ async def help(ctx):
     embed.set_author(name='Help')
     embed.add_field(name='.roll [start] [end]', value='Returns a random integer between start and end.', inline=False)
     embed.add_field(name='.judge', value='Be judged by Cthulhu.', inline=False)
-    embed.add_field(name='.confound @[target] [insanity]', value='Confound a targeted user with insanity!  Insanity is an integer between 1 and 100.', inline=False)
+    embed.add_field(name='.confound @[target] [insanity]', value='Confound a targeted user and increase their insanity!  Insanity is an integer between 1 and 100.', inline=False)
     
     await author.send(embed=embed)
 
@@ -132,7 +132,10 @@ async def confound(ctx, user : discord.User, insanity : int):
     Insanity can range from -100 to 100.
     """
     if insanity < 1 or insanity > 100:
-        await ctx.send('Insanity must be between 1 and 100 per confound')
+        await ctx.send('Insanity must be between 1 and 100 per confound.')
+        return
+    if user.id == ctx.message.author.id:
+        await ctx.send('You cannot confound yourself, mortal.')
         return
     sql_user = session.query(User).filter_by(uid = str(user.id)).first()
     if not sql_user:
