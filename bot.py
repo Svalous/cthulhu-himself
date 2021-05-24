@@ -133,11 +133,11 @@ async def confound(ctx, user : discord.User, insanity : int):
     Adds / subtracts to a user's insanity.
     Insanity can range from 1 to 100.
     """
-    if insanity < 1 or insanity > 100:
-        await ctx.send('Insanity must be between 1 and 100 per confound.')
-        return
     if user.id == ctx.message.author.id:
         await ctx.send('You cannot confound yourself, mortal.')
+        return
+    if insanity < 1 or insanity > 100:
+        await ctx.send('Insanity must be between 1 and 100 per confound.')
         return
     sql_user = session.query(User).filter_by(uid = str(user.id)).first()
     if not sql_user:
