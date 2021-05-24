@@ -115,9 +115,13 @@ async def judge(ctx):
     judgement_value = random.randint(1,10)
     judgement_text = None
     if judgement_value == 1:
-        judgement_text = "Cthulhu has judged, and found you wanting."
+        judgement_text = "Cthulhu has judged, and found you vacant."
     elif judgement_value == 2:
         judgement_text = "Cthulhu has judged, and found you limited."
+    elif judgement_value == 3:
+        judgement_text = "Cthulhu has judged, and found you wanting."
+    elif judgement_value == 8:
+        judgement_text = "Cthulhu has judged, and found you amusing."
     elif judgement_value == 9:
         judgement_text = "Cthulhu has judged, and found you exceptional."
     elif judgement_value == 10:
