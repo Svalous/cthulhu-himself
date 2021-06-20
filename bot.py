@@ -10,6 +10,7 @@ from sqlalchemy import Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
+from dotenv import load_dotenv
 
 # Logging boilerplate
 logger = logging.getLogger('discord')
@@ -21,22 +22,12 @@ logger.addHandler(handler)
 # Globals
 DEFAULT_VOLUME = 15
 
-# Load config (dev)
-if len(sys.argv) == 1:
-    with open('config.json') as json_data_file:
-        load = json.load(json_data_file)
-        config = load['Token']
-        db_string = load['DATABASE_URL']
-# Load config (prod)
-elif len(sys.argv) > 1 and str(sys.argv[1]) == 'PROD':
-    config = os.environ['TOKEN']
-    # Bit of a hack below, Heroku database_url is unsuitable for sqlalchemy and cannot be altered afaik
-    uri = os.environ['DATABASE_URL']
-    db_string = uri[:8] +'ql' + uri[8:]
-# Config not understood, exit
-else:
-    print('Configuration not understood.')
-    sys.exit(1)
+# Load dotenv
+load_dotenv()
+
+# Load config
+config = os.environ['TOKEN']
+db_string = os.environ['DATABASE_URL']
 
 # Instantiate database connection
 try:
