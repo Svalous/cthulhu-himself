@@ -1,6 +1,5 @@
 import discord
 import logging
-import json
 import random
 import sys
 import os
@@ -11,6 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
 from dotenv import load_dotenv
+from requests import get
 
 # Logging boilerplate
 logger = logging.getLogger('discord')
@@ -74,6 +74,24 @@ async def leave(ctx):
 
 # Command definitions
 @client.command(pass_context=True)
+@commands.has_role("blessed")
+async def ip(ctx):
+    """
+    Send the user the IP of my dedicated server, if and only if they are a member of the blessed discord group.
+    """
+    author = ctx.message.author
+    # Call to ipify API
+    ip = get('https://api.ipify.org').text
+    await author.send(ip)
+    
+@ip.error
+async def ip_error(ctx, error):
+    if isinstance(error, commands.errors.CheckFailure):
+        await ctx.send("You do not have the blessed role. Cthulhu ignores you.")
+    else:
+        logging.warning('ip_error(): ' + error.text)
+
+@client.command(pass_context=True)
 async def help(ctx):
     """
     Send help message to user.
@@ -88,6 +106,7 @@ async def help(ctx):
     embed.add_field(name='.roll [start] [end]', value='Returns a random integer between start and end.', inline=False)
     embed.add_field(name='.judge', value='Be judged by Cthulhu.', inline=False)
     embed.add_field(name='.confound @[target] [insanity]', value='Confound a targeted user and increase their insanity!  Insanity is an integer between 1 and 100.', inline=False)
+    embed.add_field(name='.ip', value='Ask Cthulhu for the server IP. You know the one.', inline=False)
     
     await author.send(embed=embed)
 
@@ -145,8 +164,8 @@ async def confound(ctx, user : discord.User, insanity : int):
     session.commit()
 
 # TODO:  Create devtools suite of commands, like the below
-#@client.command()
-#async def whois(ctx, user : discord.User):
-#    await ctx.send(user.id)
+# @client.command()
+# async def whois(ctx, user : discord.User):
+#     await ctx.send(user.id)
 
 client.run(config)
