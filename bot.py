@@ -4,6 +4,7 @@ import random
 import sys
 import os
 from discord.ext import commands
+from discord.http import HTTPException
 from sqlalchemy import create_engine
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base  
@@ -106,6 +107,7 @@ async def help(ctx):
     embed.add_field(name='.roll [start] [end]', value='Returns a random integer between start and end.', inline=False)
     embed.add_field(name='.judge', value='Be judged by Cthulhu.', inline=False)
     embed.add_field(name='.confound @[target] [insanity]', value='Confound a targeted user and increase their insanity!  Insanity is an integer between 1 and 100.', inline=False)
+    embed.add_field(name='.cooks [max]', value='Sets the maximum number of users allowed in your current voice channel.  A max of 0 or not specified will remove the maximum.', inline=False)
     embed.add_field(name='.ip', value='Ask Cthulhu for the server IP. You know the one.', inline=False)
     
     await author.send(embed=embed)
@@ -162,6 +164,30 @@ async def confound(ctx, user : discord.User, insanity : int):
     await ctx.send('Adding ' + str(insanity) + ' insanity to ' + user.name + '...')
     await ctx.send(user.name + ' has ' + str(sql_user.insanity) + ' total insanity.')
     session.commit()
+
+@client.command(pass_context=True)
+async def cooks(ctx, max : int=None):
+    """
+    Sets the max # of users allowed in their voice channel.
+    Can be 0-99.
+    0 or no input will turn off the max.
+    """
+    max = max if max is not None else 0
+    channel = ctx.author.voice.channel
+    await channel.edit(user_limit=max)
+    return
+
+@cooks.error
+async def cooks_error(ctx, error):
+    if isinstance(error, commands.errors.CommandInvokeError):
+        if type(error.original) == AttributeError:
+            await ctx.send("You must be in a voice channel to use the cooks command.")
+        elif type(error.original) == HTTPException:
+            await ctx.send("The max argument must be an integer between 0 and 99.")
+    elif isinstance(error, commands.errors.BadArgument):
+        await ctx.send("The max argument must be an integer if provided.")
+    else:
+        logging.warning('cooks_error(): ' + error.text)
 
 # TODO:  Create devtools suite of commands, like the below
 # @client.command()
