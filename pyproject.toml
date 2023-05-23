@@ -13,7 +13,7 @@ psycopg2 = "^2.8.6"
 SQLAlchemy = "^1.4.15"
 pandas = "^1.2.4"
 python-dotenv = "^0.18.0"
-requests = "^2.25.1"
+requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
 
